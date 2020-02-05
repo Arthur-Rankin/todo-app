@@ -1,24 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
 
+import Todo from './todo.component';
+import UserInput from './user-input.component';
+
 function App() {
+  const [todos, setTodos] = useState([
+    {
+      text: "todo one",
+      isComplete: false
+    },
+    {
+      text: "todo two",
+      isComplete: false
+    },
+    {
+      text: "todo three",
+      isComplete: false
+    },
+  ])
+
+  const addTodo = text => {
+    const newTodos = [...todos, { text, isComplete: false }]
+    setTodos(newTodos)
+  }
+
+  const completeTodo = index => {
+    const newTodos = [...todos]
+    newTodos[index].isComplete = true;
+    setTodos(newTodos)
+  }
+
+  const deleteTodo = index => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {todos.map((todoItem, index) => 
+        <Todo 
+          key={index} 
+          todoItem={todoItem} 
+          index={index}
+          completeTodo={completeTodo}
+          deleteTodo={deleteTodo}
+        />
+      )}
+
+      <UserInput 
+        addTodo={addTodo}
+      />
     </div>
   );
 }
